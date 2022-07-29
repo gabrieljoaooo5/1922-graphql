@@ -10,9 +10,23 @@ scalar DateTime
         createdAt: DateTime
     }
 
+    input UserInput {
+        name: String
+        active: Boolean
+        email: String
+        role: RolesType
+        createdAt: DateTime
+    }
+
     type Role {
         id: ID!
-        type: String!
+        type: RolesType!
+    }
+
+    enum RolesType {
+        STUDENT
+        TEACHER
+        PRINCIPAL
     }
 
     type Query {
@@ -21,9 +35,26 @@ scalar DateTime
     }
 
     type Mutation {
-        addUser(name: String!, active: Boolean!, email: String, role: String!, createdAt: DateTime): User!
-        updateUser(id: ID!, name: String!, active: Boolean!, email: String, role: String!): User!
-        deleteUser(id: ID!): ID!
+        addUser(user: UserInput): User!
+        updateUser(id: ID!, user: UserInput): updateUserResponse!
+        deleteUser(id: ID!): dleteUserResponse!
+    }
+
+    interface customResponse {
+        #abstract type
+        code: Int!
+        message: String!
+    }
+
+    type dleteUserResponse implements customResponse {
+        code: Int!
+        message: String!
+    }
+
+    type updateUserResponse implements customResponse {
+        code: Int!
+        message: String!
+        user: User!
     }
 `
 
